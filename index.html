@@ -113,7 +113,7 @@
     appNotFoundBtn.addEventListener("click", function (e) {
       e.preventDefault();
       const start = Date.now();
-      window.location.href = deeplink;
+      window.location.href = deeplinkFake;
 
       // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
       setTimeout(function () {
