@@ -44,7 +44,7 @@
       background: #28a745;
     }
     .btn-tertiary {
-      background: #6c757d;
+      background: #100d50;
     }
   </style>
 </head>
@@ -53,12 +53,14 @@
   <p>เพื่อประสบการณ์การใช้งานที่ดีที่สุด แนะนำให้เปิดผ่านแอป</p>
 
   <a id="openApp" class="btn btn-primary" href="#">เปิดแอป</a>
+  <a id="appNotFound" class="btn btn-primary" href="#">เปิดแอปแบบไม่สำเร็จ</a>
   <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
   <a id="openWeb" class="btn btn-tertiary" href="https://xn--72cst3czdd.com/">ดูบนเว็บ</a>
 
   <script>
     // URLs กำหนดตาม Platform
     const deeplink = "czpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
+    const deeplinkFake = "fakeczpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
     const iosStore = "https://apps.apple.com/th/app/%E0%B8%97%E0%B8%B2%E0%B8%87%E0%B8%A3-%E0%B8%90/id1514331336";
     const androidStore = "https://play.google.com/store/apps/details?id=th.or.dga.citizenportal";
     const huaweiStore = "https://appgallery.huawei.com/app/C111706003";
@@ -75,6 +77,7 @@
 
     const os = getMobileOS();
     const openBtn = document.getElementById("openApp");
+    const appNotFoundBtn = document.getElementById("appNotFound");
     const downloadBtn = document.getElementById("downloadApp");
 
     if (os === "iOS") {
@@ -89,6 +92,25 @@
 
     // ปุ่มเปิดแอป
     openBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const start = Date.now();
+      window.location.href = deeplink;
+
+      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
+      setTimeout(function () {
+        const end = Date.now();
+        if (end - start < 1500) { 
+          // ผู้ใช้ยังอยู่ใน browser → ไปที่ store
+          if (os === "iOS") window.location.href = iosStore;
+          else if (os === "Android") window.location.href = androidStore;
+          else if (os === "Huawei") window.location.href = huaweiStore;
+          else window.location.href = webUrl;
+        }
+      }, 1500);
+    });
+
+    // ปุ่มเปิดแอปแบบที่ไม่เจอแอป
+    appNotFoundBtn.addEventListener("click", function (e) {
       e.preventDefault();
       const start = Date.now();
       window.location.href = deeplink;
