@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>เปิดด้วยแอป MyApp</title>
+  <title>กำลังเปิดแอป MyApp...</title>
   <style>
     body {
       font-family: sans-serif;
@@ -44,21 +44,19 @@
       background: #28a745;
     }
     .btn-tertiary {
-      background: #100d50;
+      background: #6c757d;
     }
   </style>
 </head>
 <body>
-  <h1>เปิดด้วยแอป MyApp</h1>
-  <p>เพื่อประสบการณ์การใช้งานที่ดีที่สุด แนะนำให้เปิดผ่านแอป</p>
+  <h1>กำลังเปิดแอป MyApp...</h1>
+  <p>ถ้าไม่ถูกเปิดอัตโนมัติ กรุณาเลือกตัวเลือกด้านล่าง</p>
 
-  <a id="openApp" class="btn btn-primary" href="#">เปิดแอป</a>
-  <a id="simulateAppNotFound" class="btn btn-primary" href="#">เปิดแอปแบบไม่สำเร็จ</a>
   <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
-  <a id="openWeb" class="btn btn-tertiary" href="https://xn--72cst3czdd.com/">ดูบนเว็บ</a>
+  <a id="openWeb" class="btn btn-tertiary" href="https://myapp.com/web">ดูบนเว็บ</a>
 
   <script>
-    // URLs กำหนดตาม Platform
+    // URLs
     const deeplink = "czpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
     const deeplinkFake = "fakeczpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
     const iosStore = "https://apps.apple.com/th/app/%E0%B8%97%E0%B8%B2%E0%B8%87%E0%B8%A3-%E0%B8%90/id1514331336";
@@ -72,12 +70,10 @@
       if (/android/i.test(userAgent)) return "Android";
       if (/huawei/i.test(userAgent)) return "Huawei";
       if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
-      return "Desktop";
+      return "Desktop";s
     }
 
     const os = getMobileOS();
-    const openBtn = document.getElementById("openApp");
-    const appNotFoundBtn = document.getElementById("simulateAppNotFound");
     const downloadBtn = document.getElementById("downloadApp");
 
     if (os === "iOS") {
@@ -87,45 +83,25 @@
     } else if (os === "Huawei") {
       downloadBtn.href = huaweiStore;
     } else {
-      downloadBtn.style.display = "none"; // ถ้าเป็น Desktop ไม่ต้องมีปุ่มโหลดแอป
+      downloadBtn.style.display = "none"; // ถ้าเป็น Desktop ซ่อนปุ่มโหลดแอป
     }
 
-    // ฟังก์ชันสำหรับ redirect ไปยัง store หรือเว็บ
-    function redirectIfAppNotOpened(start) {
-      const end = Date.now();
-      if (end - start < 1500) { 
-        // ผู้ใช้ยังอยู่ใน browser → ไปที่ store
-        if (os === "iOS") window.location.href = iosStore;
-        else if (os === "Android") window.location.href = androidStore;
-        else if (os === "Huawei") window.location.href = huaweiStore;
-        else window.location.href = webUrl;
-      }
-    }
-
-    // ปุ่มเปิดแอป
-    openBtn.addEventListener("click", function (e) {
-      e.preventDefault();
+    // Auto-try deeplink
+    window.onload = function () {
       const start = Date.now();
       window.location.href = deeplink;
 
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
+      // ถ้าไม่ถูกเปิดในแอป → ส่งไป store/web หลัง 1.5 วินาที
       setTimeout(function () {
-        redirectIfAppNotOpened(start);
+        const end = Date.now();
+        if (end - start < 1500) {
+          if (os === "iOS") window.location.href = iosStore;
+          else if (os === "Android") window.location.href = androidStore;
+          else if (os === "Huawei") window.location.href = huaweiStore;
+          else window.location.href = webUrl;
+        }
       }, 1500);
-    });
-
-    // ปุ่มเปิดแอปแบบที่ไม่เจอแอป
-    appNotFoundBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      const start = Date.now();
-      window.location.href = deeplinkFake;
-
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
-      setTimeout(function () {
-        console.log("App not found, redirecting...");
-        redirectIfAppNotOpened(start);
-      }, 1500);
-    });
+    };
   </script>
 </body>
 </html>
