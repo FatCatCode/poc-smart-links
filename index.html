@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เปิดด้วยแอป MyApp</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      background: #f9f9f9;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: block;
+      margin: 0.5rem;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      width: 80%;
+      max-width: 300px;
+    }
+    .btn-primary {
+      background: #007bff;
+    }
+    .btn-secondary {
+      background: #28a745;
+    }
+    .btn-tertiary {
+      background: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <h1>เปิดด้วยแอป MyApp</h1>
+  <p>เพื่อประสบการณ์การใช้งานที่ดีที่สุด แนะนำให้เปิดผ่านแอป</p>
+
+  <a id="openApp" class="btn btn-primary" href="#">เปิดแอป</a>
+  <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
+  <a id="openWeb" class="btn btn-tertiary" href="https://myapp.com/web">ดูบนเว็บ</a>
+
+  <script>
+    // URLs กำหนดตาม Platform
+    const deeplink = "myapp://open?id=123"; // scheme ของแอป
+    const iosStore = "https://apps.apple.com/app/id123456789";
+    const androidStore = "https://play.google.com/store/apps/details?id=com.myapp";
+    const huaweiStore = "https://appgallery.huawei.com/app/C123456";
+    const webUrl = "https://myapp.com/web";
+
+    // Detect Platform
+    function getMobileOS() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(userAgent)) return "Android";
+      if (/huawei/i.test(userAgent)) return "Huawei";
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
+      return "Desktop";
+    }
+
+    const os = getMobileOS();
+    const openBtn = document.getElementById("openApp");
+    const downloadBtn = document.getElementById("downloadApp");
+
+    if (os === "iOS") {
+      downloadBtn.href = iosStore;
+    } else if (os === "Android") {
+      downloadBtn.href = androidStore;
+    } else if (os === "Huawei") {
+      downloadBtn.href = huaweiStore;
+    } else {
+      downloadBtn.style.display = "none"; // ถ้าเป็น Desktop ไม่ต้องมีปุ่มโหลดแอป
+    }
+
+    // ปุ่มเปิดแอป
+    openBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const start = Date.now();
+      window.location.href = deeplink;
+
+      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
+      setTimeout(function () {
+        const end = Date.now();
+        if (end - start < 1500) { 
+          // ผู้ใช้ยังอยู่ใน browser → ไปที่ store
+          if (os === "iOS") window.location.href = iosStore;
+          else if (os === "Android") window.location.href = androidStore;
+          else if (os === "Huawei") window.location.href = huaweiStore;
+          else window.location.href = webUrl;
+        }
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
