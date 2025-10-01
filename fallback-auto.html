@@ -56,6 +56,7 @@
   <p>ถ้าไม่ถูกเปิดอัตโนมัติ กรุณาเลือกตัวเลือกด้านล่าง</p>
 
   <div id="actionBtns">
+    <a id="openApp" class="btn btn-primary" href="#">เปิดแอปทางรัฐ</a>
     <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
   </div>
 
@@ -78,6 +79,7 @@
     const os = getMobileOS();
     const actionBtns = document.getElementById("actionBtns");
     const downloadBtn = document.getElementById("downloadApp");
+    const openAppBtn = document.getElementById("openApp");
 
     if (os === "iOS") {
       downloadBtn.href = iosStore;
@@ -89,30 +91,22 @@
       downloadBtn.style.display = "none"; // Hide download button on Desktop (ซ่อนปุ่มโหลดแอปถ้าเป็น Desktop)
     }
 
+    openAppBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      window.location.href = deeplink;
+    });
+
     // Auto-try deeplink
     window.onload = function () {
-      // สร้างลิงก์ deeplink แบบ hidden
-      const hiddenLink = document.createElement('a');
-      hiddenLink.href = deeplink;
-      hiddenLink.style.display = 'none';
-      document.body.appendChild(hiddenLink);
-      // กำหนดระยะเวลารอแสดงปุ่ม (ms)
-      const showBtnsDelay = 1000; // สามารถปรับค่าได้ตามต้องการ
-
-      // ตรวจสอบ deeplink success/failure โดยใช้ visibility change
-      let deeplinkAttempted = false;
-      document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState === 'hidden') {
-          deeplinkAttempted = true;
-        }
-      });
-
+      // Auto-try deeplink หลัง delay 0.5 วินาที
       setTimeout(function () {
-        // ถ้ายังอยู่บนหน้าเว็บหลัง deeplink (deeplink fail หรือ user กลับมา)
-        if (!deeplinkAttempted) {
-          actionBtns.style.display = "block";
-        }
-      }, showBtnsDelay);
+        window.location.href = deeplink;
+      }, 500);
+
+      // แสดงปุ่ม actionBtns หลัง 1 วินาที
+      setTimeout(function () {
+        actionBtns.style.display = "block";
+      }, 1000);
     };
   </script>
 </body>
