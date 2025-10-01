@@ -91,23 +91,15 @@
 
     // Auto-try deeplink
     window.onload = function () {
-      const start = Date.now();
+      // เริ่ม auto-try deeplink ทันทีเมื่อโหลดหน้า
       setTimeout(function () {
         window.location.href = deeplink;
-
-        // ถ้าไม่ถูกเปิดในแอป → ส่งไป store/web หลัง 1.5 วินาที
-        setTimeout(function () {
-          const end = Date.now();
-          if (end - start < 2000) { // รวม delay 0.5s + 1.5s = 2s
-            // แสดงปุ่มเมื่อเปิดแอปไม่สำเร็จ
-            actionBtns.style.display = "block";
-            if (os === "iOS") window.location.href = iosStore;
-            else if (os === "Android") window.location.href = androidStore;
-            else if (os === "Huawei") window.location.href = huaweiStore;
-            else window.location.href = webUrl;
-          }
-        }, 1500);
       }, 500); // delay 0.5 วินาทีก่อน deeplink
+
+      // แสดงปุ่ม actionBtns หลังจากผ่านไป 1 วินาที
+      setTimeout(function () {
+        actionBtns.style.display = "block";
+      }, 1000);
     };
   </script>
 </body>
