@@ -98,10 +98,7 @@
 
     // Auto-try deeplink
     window.onload = function () {
-      // Auto-try deeplink หลัง delay 0.5 วินาที
-      setTimeout(function () {
-        window.location.href = deeplink;
-      }, 500);
+      window.location.href = deeplink;
 
       // แสดงปุ่ม actionBtns หลัง 1 วินาที
       setTimeout(function () {
