@@ -52,8 +52,10 @@
   <h1>กำลังเปิดแอป MyApp...</h1>
   <p>ถ้าไม่ถูกเปิดอัตโนมัติ กรุณาเลือกตัวเลือกด้านล่าง</p>
 
-  <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
-  <a id="openWeb" class="btn btn-tertiary" href="https://myapp.com/web">ดูบนเว็บ</a>
+  <div id="actionBtns" style="display:none;">
+    <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
+    <a id="openWeb" class="btn btn-tertiary" href="https://myapp.com/web">ดูบนเว็บ</a>
+  </div>
 
   <script>
     // URLs
@@ -74,6 +76,7 @@
     }
 
     const os = getMobileOS();
+    const actionBtns = document.getElementById("actionBtns");
     const downloadBtn = document.getElementById("downloadApp");
 
     if (os === "iOS") {
@@ -89,18 +92,22 @@
     // Auto-try deeplink
     window.onload = function () {
       const start = Date.now();
-      window.location.href = deeplink;
-
-      // ถ้าไม่ถูกเปิดในแอป → ส่งไป store/web หลัง 1.5 วินาที
       setTimeout(function () {
-        const end = Date.now();
-        if (end - start < 1500) {
-          if (os === "iOS") window.location.href = iosStore;
-          else if (os === "Android") window.location.href = androidStore;
-          else if (os === "Huawei") window.location.href = huaweiStore;
-          else window.location.href = webUrl;
-        }
-      }, 1500);
+        window.location.href = deeplink;
+
+        // ถ้าไม่ถูกเปิดในแอป → ส่งไป store/web หลัง 1.5 วินาที
+        setTimeout(function () {
+          const end = Date.now();
+          if (end - start < 2000) { // รวม delay 0.5s + 1.5s = 2s
+            // แสดงปุ่มเมื่อเปิดแอปไม่สำเร็จ
+            actionBtns.style.display = "block";
+            if (os === "iOS") window.location.href = iosStore;
+            else if (os === "Android") window.location.href = androidStore;
+            else if (os === "Huawei") window.location.href = huaweiStore;
+            else window.location.href = webUrl;
+          }
+        }, 1500);
+      }, 500); // delay 0.5 วินาทีก่อน deeplink
     };
   </script>
 </body>
