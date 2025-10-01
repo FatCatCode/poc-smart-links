@@ -83,8 +83,10 @@
     }
 
     const os = getMobileOS();
-    const openBtn = document.getElementById("openApp");
-    const openBtnUat = document.getElementById("openAppUat");
+    const openAppDeepDev = document.getElementById("openAppDeepDev");
+    const openAppDeepUat = document.getElementById("openAppDeepUat");
+    const openAppShortDev = document.getElementById("openAppShortDev");
+    const openAppShortUat = document.getElementById("openAppShortUat");
     const appNotFoundBtn = document.getElementById("simulateAppNotFound");
     const downloadBtn = document.getElementById("downloadApp");
 
@@ -111,7 +113,7 @@
     }
 
     // ปุ่มเปิดแอป DEV
-    openBtn.addEventListener("click", function (e) {
+    openAppDeepDev.addEventListener("click", function (e) {
       e.preventDefault();
       const start = Date.now();
       window.location.href = deeplinkDev;
@@ -122,7 +124,7 @@
       }, 1500);
     });
      // ปุ่มเปิดแอป UAT
-    openBtnUat.addEventListener("click", function (e) {
+    openAppDeepUat.addEventListener("click", function (e) {
       e.preventDefault();
       const start = Date.now();
       window.location.href = deeplinkUat;
@@ -132,7 +134,28 @@
         redirectIfAppNotOpened(start);
       }, 1500);
     });
+    // ปุ่มเปิดแอป DEV
+    openAppShortDev.addEventListener("click", function (e) {
+      e.preventDefault();
+      const start = Date.now();
+      window.location.href = shortLinkDev;
 
+      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
+      setTimeout(function () {
+        redirectIfAppNotOpened(start);
+      }, 1500);
+    });
+     // ปุ่มเปิดแอป UAT
+    openAppShortUat.addEventListener("click", function (e) {
+      e.preventDefault();
+      const start = Date.now();
+      window.location.href = shortLinkUat;
+
+      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
+      setTimeout(function () {
+        redirectIfAppNotOpened(start);
+      }, 1500);
+    });
 
     // ปุ่มเปิดแอปแบบที่ไม่เจอแอป
     appNotFoundBtn.addEventListener("click", function (e) {
