@@ -46,25 +46,25 @@
     .btn-tertiary {
       background: #6c757d;
     }
+    #actionBtns {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>กำลังเปิดแอป MyApp...</h1>
   <p>ถ้าไม่ถูกเปิดอัตโนมัติ กรุณาเลือกตัวเลือกด้านล่าง</p>
 
-  <div id="actionBtns" style="display:none;">
+  <div id="actionBtns">
     <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
-    <a id="openWeb" class="btn btn-tertiary" href="https://myapp.com/web">ดูบนเว็บ</a>
   </div>
 
   <script>
     // URLs
     const deeplink = "czpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
-    const deeplinkFake = "fakeczpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
     const iosStore = "https://apps.apple.com/th/app/%E0%B8%97%E0%B8%B2%E0%B8%87%E0%B8%A3-%E0%B8%90/id1514331336";
     const androidStore = "https://play.google.com/store/apps/details?id=th.or.dga.citizenportal";
     const huaweiStore = "https://appgallery.huawei.com/app/C111706003";
-    const webUrl = "https://google.com/";
 
     // Detect Platform
     function getMobileOS() {
@@ -72,7 +72,7 @@
       if (/android/i.test(userAgent)) return "Android";
       if (/huawei/i.test(userAgent)) return "Huawei";
       if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
-      return "Desktop";s
+      return "Desktop";
     }
 
     const os = getMobileOS();
@@ -86,20 +86,33 @@
     } else if (os === "Huawei") {
       downloadBtn.href = huaweiStore;
     } else {
-      downloadBtn.style.display = "none"; // ถ้าเป็น Desktop ซ่อนปุ่มโหลดแอป
+      downloadBtn.style.display = "none"; // Hide download button on Desktop (ซ่อนปุ่มโหลดแอปถ้าเป็น Desktop)
     }
 
     // Auto-try deeplink
     window.onload = function () {
-      // เริ่ม auto-try deeplink ทันทีเมื่อโหลดหน้า
-      setTimeout(function () {
-        window.location.href = deeplink;
-      }, 500); // delay 0.5 วินาทีก่อน deeplink
+      // สร้างลิงก์ deeplink แบบ hidden
+      const hiddenLink = document.createElement('a');
+      hiddenLink.href = deeplink;
+      hiddenLink.style.display = 'none';
+      document.body.appendChild(hiddenLink);
+      // กำหนดระยะเวลารอแสดงปุ่ม (ms)
+      const showBtnsDelay = 1000; // สามารถปรับค่าได้ตามต้องการ
 
-      // แสดงปุ่ม actionBtns หลังจากผ่านไป 1 วินาที
+      // ตรวจสอบ deeplink success/failure โดยใช้ visibility change
+      let deeplinkAttempted = false;
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+          deeplinkAttempted = true;
+        }
+      });
+
       setTimeout(function () {
-        actionBtns.style.display = "block";
-      }, 1000);
+        // ถ้ายังอยู่บนหน้าเว็บหลัง deeplink (deeplink fail หรือ user กลับมา)
+        if (!deeplinkAttempted) {
+          actionBtns.style.display = "block";
+        }
+      }, showBtnsDelay);
     };
   </script>
 </body>
