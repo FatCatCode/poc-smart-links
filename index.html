@@ -3,172 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>เปิดด้วยแอป MyApp</title>
+  <title>หน้าเลือกประเภทลิงก์</title>
   <style>
     body {
       font-family: sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-      background: #f9f9f9;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      box-sizing: border-box;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     h1 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: #007bff;
+      text-align: center;
     }
-    p {
-      color: #555;
-      margin-bottom: 2rem;
-    }
-    .btn {
+    .btn-link {
       display: block;
-      margin: 0.5rem;
-      padding: 0.8rem 1.2rem;
-      font-size: 1rem;
+      width: 100%;
+      max-width: 320px;
+      margin: 0.5rem 0;
+      padding: 0.9rem 1.2rem;
+      font-size: 1.1rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       text-decoration: none;
       color: white;
-      width: 80%;
-      max-width: 300px;
-    }
-    .btn-primary {
       background: #007bff;
+      text-align: center;
+      transition: background 0.2s;
+      box-sizing: border-box;
     }
-    .btn-secondary {
-      background: #28a745;
+    .btn-link:hover {
+      background: #0056b3;
     }
-    .btn-tertiary {
-      background: #100d50;
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      h1 {
+        font-size: 1.1rem;
+      }
+      .btn-link {
+        font-size: 1rem;
+        padding: 0.7rem 0.8rem;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>เปิดด้วยแอป MyApp</h1>
-  <p>เพื่อประสบการณ์การใช้งานที่ดีที่สุด แนะนำให้เปิดผ่านแอป</p>
-
-  <a id="openAppDeepDev" class="btn btn-primary" href="#">เปิดแอปDeepDev</a>
-  <a id="openAppDeepUat" class="btn btn-primary" href="#">เปิดแอปDeepUat</a>
-  <a id="openAppShortDev" class="btn btn-primary" href="#">เปิดแอปShortDev</a>
-  <a id="openAppShortUat" class="btn btn-primary" href="#">เปิดแอปShortUat</a>
-  <a id="simulateAppNotFound" class="btn btn-primary" href="#">เปิดแอปแบบไม่สำเร็จ</a>
-  <a id="downloadApp" class="btn btn-secondary" href="#">ดาวน์โหลดแอป</a>
-  <a id="openWeb" class="btn btn-tertiary" href="https://xn--72cst3czdd.com/">ดูบนเว็บ</a>
-
-  <script>
-    // URLs กำหนดตาม Platform
-    const deeplinkDev = "czpdgadev://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
-    const deeplinkUat = "czpdgauat://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
-    const shortLinkDev = "https://czp-dev.apps.go.th/czp/shortlink/mWF-jn3FDEGaM02xny0kfg"; // scheme ของแอป
-    const shortLinkUat = "https://czp-uat.apps.go.th/czp/shortlink/mWF-jn3FDEGaM02xny0kfg"; // scheme ของแอป
-    
-    const deeplinkFake = "fakeczpdga://czp.dga.or.th/a2a/authen?a2aToken=xxx&partnerId=yyy"; // scheme ของแอป
-    const iosStore = "https://apps.apple.com/th/app/%E0%B8%97%E0%B8%B2%E0%B8%87%E0%B8%A3-%E0%B8%90/id1514331336";
-    const androidStore = "https://play.google.com/store/apps/details?id=th.or.dga.citizenportal";
-    const huaweiStore = "https://appgallery.huawei.com/app/C111706003";
-    const webUrl = "https://google.com/";
-
-    // Detect Platform
-    function getMobileOS() {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android/i.test(userAgent)) return "Android";
-      if (/huawei/i.test(userAgent)) return "Huawei";
-      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
-      return "Desktop";
-    }
-
-    const os = getMobileOS();
-    const openAppDeepDev = document.getElementById("openAppDeepDev");
-    const openAppDeepUat = document.getElementById("openAppDeepUat");
-    const openAppShortDev = document.getElementById("openAppShortDev");
-    const openAppShortUat = document.getElementById("openAppShortUat");
-    const appNotFoundBtn = document.getElementById("simulateAppNotFound");
-    const downloadBtn = document.getElementById("downloadApp");
-
-    if (os === "iOS") {
-      downloadBtn.href = iosStore;
-    } else if (os === "Android") {
-      downloadBtn.href = androidStore;
-    } else if (os === "Huawei") {
-      downloadBtn.href = huaweiStore;
-    } else {
-      downloadBtn.style.display = "none"; // ถ้าเป็น Desktop ไม่ต้องมีปุ่มโหลดแอป
-    }
-
-    // ฟังก์ชันสำหรับ redirect ไปยัง store หรือเว็บ
-    function redirectIfAppNotOpened(start) {
-      const end = Date.now();
-      if (end - start < 1500) { 
-        // ผู้ใช้ยังอยู่ใน browser → ไปที่ store
-        if (os === "iOS") window.location.href = iosStore;
-        else if (os === "Android") window.location.href = androidStore;
-        else if (os === "Huawei") window.location.href = huaweiStore;
-        else window.location.href = webUrl;
-      }
-    }
-
-    // ปุ่มเปิดแอป DEV
-    openAppDeepDev.addEventListener("click", function (e) {
-      e.preventDefault();
-      const start = Date.now();
-      window.location.href = deeplinkDev;
-
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
-      setTimeout(function () {
-        redirectIfAppNotOpened(start);
-      }, 1500);
-    });
-     // ปุ่มเปิดแอป UAT
-    openAppDeepUat.addEventListener("click", function (e) {
-      e.preventDefault();
-      const start = Date.now();
-      window.location.href = deeplinkUat;
-
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
-      setTimeout(function () {
-        redirectIfAppNotOpened(start);
-      }, 1500);
-    });
-    // ปุ่มเปิดแอป DEV
-    openAppShortDev.addEventListener("click", function (e) {
-      e.preventDefault();
-      const start = Date.now();
-      window.location.href = shortLinkDev;
-
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
-      setTimeout(function () {
-        redirectIfAppNotOpened(start);
-      }, 1500);
-    });
-     // ปุ่มเปิดแอป UAT
-    openAppShortUat.addEventListener("click", function (e) {
-      e.preventDefault();
-      const start = Date.now();
-      window.location.href = shortLinkUat;
-
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
-      setTimeout(function () {
-        redirectIfAppNotOpened(start);
-      }, 1500);
-    });
-
-    // ปุ่มเปิดแอปแบบที่ไม่เจอแอป
-    appNotFoundBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      const start = Date.now();
-      window.location.href = deeplinkFake;
-
-      // ถ้าเปิดแอปไม่ได้ (ไม่มี response) → redirect ไป store หลัง 2 วินาที
-      setTimeout(function () {
-        console.log("App not found, redirecting...");
-        redirectIfAppNotOpened(start);
-      }, 1500);
-    });
-  </script>
+  <div class="container">
+    <h1>เลือกประเภทลิงก์ที่ต้องการทดสอบ</h1>
+    <a class="btn-link" href="shortlinks.html">Short Links</a>
+    <a class="btn-link" href="deeplink.html">Deeplink</a>
+  </div>
 </body>
 </html>
