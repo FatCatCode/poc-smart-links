@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ทดสอบ Short Links czp.apps.go.th / czp.dga.or.th</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- เพิ่มบรรทัดนี้ -->
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .env-select {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    h2 {
+      margin-top: 2rem;
+      color: #007bff;
+    }
+    .btn-group {
+      margin-bottom: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    .btn {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      background: #007bff;
+      width: 100%;
+      max-width: 400px;
+      transition: background 0.2s;
+      box-sizing: border-box;
+      word-break: break-word;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .host-label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      .env-select {
+        font-size: 1rem;
+        padding: 0.4rem;
+        margin-bottom: 1rem;
+      }
+      .btn-group {
+        margin-bottom: 1rem;
+        max-width: 100%;
+      }
+      .btn {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.8rem;
+        max-width: 100%;
+      }
+      .host-label {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>ทดสอบ Short Links</h1>
+  <label for="env">เลือก Environment:</label>
+  <select id="env" class="env-select">
+    <option value="czp-dev.apps.go.th">DEV</option>
+    <option value="czp-uat.apps.go.th">UAT</option>
+    <option value="czp.apps.go.th" selected>PRD</option>
+  </select>
+
+  <div class="btn-group" id="group-apps">
+    <div class="host-label">Host: <span id="apps-host-label">czp.apps.go.th</span></div>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=DD&atc={onetimetoken}">ThaiD success</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=DDE&msg={message}">ThaiD error</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=OA&mid=8b844acc-1c7a-4bfb-a9df-793a94ede2d6">Direct to miniapp</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=BTM&atc={onetimetoken}">Boonterm</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=THP&atc={onetimetoken}">ThailandPost</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=7EVEN&atc={onetimetoken}">7_11</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=BIGC&atc={onetimetoken}">Big C</a>
+    <a class="btn" data-url="https://czp.apps.go.th/czp/link?type=LOTUS&atc={onetimetoken}">Lotus</a>
+  </div>
+
+  <div class="btn-group" id="group-dga">
+    <div class="host-label">Host: czp.dga.or.th</div>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=DD&atc={onetimetoken}">ThaiD success</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=DDE&msg={message}">ThaiD error</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=OA&mid=8b844acc-1c7a-4bfb-a9df-793a94ede2d6">Direct to miniapp</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=BTM&atc={onetimetoken}">Boonterm</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=THP&atc={onetimetoken}">ThailandPost</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=7EVEN&atc={onetimetoken}">7_11</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=BIGC&atc={onetimetoken}">Big C</a>
+    <a class="btn" data-url="https://czp.dga.or.th/czp/link?type=LOTUS&atc={onetimetoken}">Lotus</a>
+  </div>
+
+  <script>
+  const envSelect = document.getElementById('env');
+  const appsHostLabel = document.getElementById('apps-host-label');
+  const updateLinks = () => {
+    const appsHost = envSelect.value;
+    appsHostLabel.textContent = appsHost;
+    // czp.apps.go.th (dynamic host)
+    document.querySelectorAll('#group-apps .btn').forEach(btn => {
+      let url = btn.getAttribute('data-url');
+      // Replace host part with selected env host, always use https://
+      url = url.replace(/https:\/\/czp\.apps\.go\.th\//, `https://${appsHost}/`);
+      btn.setAttribute('href', url);
+    });
+    // czp.dga.or.th (fixed host, always use https://)
+    document.querySelectorAll('#group-dga .btn').forEach(btn => {
+      let url = btn.getAttribute('data-url');
+      url = url.replace(/https:\/\/czp\.dga\.or\.th\//, 'https://czp.dga.or.th/');
+      btn.setAttribute('href', url);
+    });
+  };
+  envSelect.addEventListener('change', updateLinks);
+  updateLinks();
+  </script>
+</body>
+</html>
