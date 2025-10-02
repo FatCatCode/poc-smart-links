@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ทดสอบ Deeplink czp.apps.go.th / czp.dga.or.th</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .env-select {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .btn-group {
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      background: #007bff;
+      width: 100%;
+      max-width: 400px;
+      transition: background 0.2s;
+      text-align: left;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .host-label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>ทดสอบ Deeplink</h1>
+  <label for="env">เลือก Environment:</label>
+  <select id="env" class="env-select">
+    <option value="czpdgadev://">DEV</option>
+    <option value="czpdgauat://">UAT</option>
+    <option value="czpdga://" selected>PRD</option>
+  </select>
+
+  <div class="btn-group" id="group-apps">
+    <div class="host-label">Host: czp.apps.go.th</div>
+    <button class="btn" data-path="czp/link?type=DD&atc=xxxxxx">ThaiD success</button>
+    <button class="btn" data-path="czp/link?type=DDE&msg=ทดสอบ error">ThaiD error</button>
+    <button class="btn" data-path="thaid/authen?type=DD&atc=xxxxxx">ThaiD(New) success</button>
+    <button class="btn" data-path="thaid/authen?type=DDE&msg=ทดสอบ error">ThaiD(New) error</button>
+    <button class="btn" data-path="czp/link?type=OA&mid=8b844acc-1c7a-4bfb-a9df-793a94ede2d6">Direct to miniapp</button>
+    <button class="btn" data-path="a2a/authen?a2aToken=xxx&partnerId=pppppp">App2App</button>
+    <button class="btn" data-path="czp/link?type=BTM&atc=xxxxxx">Boonterm</button>
+    <button class="btn" data-path="czp/link?type=THP&atc=xxxxxx">ThailandPost</button>
+    <button class="btn" data-path="czp/link?type=7EVEN&atc=xxxxxx">7_11</button>
+    <button class="btn" data-path="czp/link?type=BIGC&atc=xxxxxx">Big C</button>
+    <button class="btn" data-path="czp/link?type=LOTUS&atc=xxxxxx">Lotus</button>
+  </div>
+
+  <div class="btn-group" id="group-dga">
+    <div class="host-label">Host: czp.dga.or.th</div>
+    <button class="btn" data-path="czp/link?type=DD&atc=xxxxxx">ThaiD success</button>
+    <button class="btn" data-path="czp/link?type=DDE&msg=ทดสอบ error">ThaiD error</button>
+    <button class="btn" data-path="thaid/authen?type=DD&atc=xxxxxx">ThaiD(New) success</button>
+    <button class="btn" data-path="thaid/authen?type=DDE&msg=ทดสอบ error">ThaiD(New) error</button>
+    <button class="btn" data-path="czp/link?type=OA&mid=8b844acc-1c7a-4bfb-a9df-793a94ede2d6">Direct to miniapp</button>
+    <button class="btn" data-path="a2a/authen?a2aToken=xxx&partnerId=pppppp">App2App</button>
+    <button class="btn" data-path="czp/link?type=BTM&atc=xxxxxx">Boonterm</button>
+    <button class="btn" data-path="czp/link?type=THP&atc=xxxxxx">ThailandPost</button>
+    <button class="btn" data-path="czp/link?type=7EVEN&atc=xxxxxx">7_11</button>
+    <button class="btn" data-path="czp/link?type=BIGC&atc=xxxxxx">Big C</button>
+    <button class="btn" data-path="czp/link?type=LOTUS&atc=xxxxxx">Lotus</button>
+  </div>
+
+  <script>
+    const envSelect = document.getElementById('env');
+    function getSchema() {
+      return envSelect.value;
+    }
+    function openDeeplink(schema, host, path) {
+      const deeplink = `${schema}${host}/${path}`;
+      window.location.href = deeplink;
+    }
+    function setupButtons(groupId, host) {
+      document.querySelectorAll(`#${groupId} .btn`).forEach(btn => {
+        btn.addEventListener('click', function() {
+          openDeeplink(getSchema(), host, btn.getAttribute('data-path'));
+        });
+      });
+    }
+    setupButtons('group-apps', 'czp.apps.go.th');
+    setupButtons('group-dga', 'czp.dga.or.th');
+  </script>
+</body>
+</html>
