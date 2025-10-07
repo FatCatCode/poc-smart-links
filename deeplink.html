@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>ทดสอบ Deeplink czp.apps.go.th / czp.dga.or.th</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- เพิ่มบรรทัดนี้ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       font-family: sans-serif;
@@ -91,13 +91,13 @@
   <h1>ทดสอบ Deeplink</h1>
   <label for="env">เลือก Environment:</label>
   <select id="env" class="env-select">
-    <option value="czpdgadev://">DEV</option>
-    <option value="czpdgauat://">UAT</option>
-    <option value="czpdga://" selected>PRD</option>
+    <option value="DEV">DEV</option>
+    <option value="UAT">UAT</option>
+    <option value="PRD" selected>PRD</option>
   </select>
 
   <div class="btn-group" id="group-apps">
-    <div class="host-label">Host: czp.apps.go.th</div>
+    <div class="host-label">Host: <span id="apps-host-label">czp.apps.go.th</span></div>
     <a class="btn" data-path="czp/link?type=DD&atc=xxxxxx">ThaiD success</a>
     <a class="btn" data-path="czp/link?type=DDE&msg=ทดสอบ error">ThaiD error</a>
     <a class="btn" data-path="thaid/authen?type=DD&atc=xxxxxx">ThaiD(New) success</a>
@@ -128,14 +128,22 @@
 
   <script>
     const envSelect = document.getElementById('env');
+    const appsHostLabel = document.getElementById('apps-host-label');
+    const envConfig = {
+      DEV:   { schema: 'czpdgadev://', host: 'czp-dev.apps.go.th' },
+      UAT:   { schema: 'czpdgauat://', host: 'czp-uat.apps.go.th' },
+      PRD:   { schema: 'czpdga://',    host: 'czp.apps.go.th' }
+    };
     const updateLinks = () => {
-      const schema = envSelect.value;
-      // czp.apps.go.th
+      const env = envSelect.value;
+      const { schema, host } = envConfig[env];
+      appsHostLabel.textContent = host;
+      // czp.apps.go.th (dynamic host)
       document.querySelectorAll('#group-apps .btn').forEach(btn => {
         const path = btn.getAttribute('data-path');
-        btn.setAttribute('href', `${schema}czp.apps.go.th/${path}`);
+        btn.setAttribute('href', `${schema}${host}/${path}`);
       });
-      // czp.dga.or.th
+      // czp.dga.or.th (fixed host, schema changes)
       document.querySelectorAll('#group-dga .btn').forEach(btn => {
         const path = btn.getAttribute('data-path');
         btn.setAttribute('href', `${schema}czp.dga.or.th/${path}`);
