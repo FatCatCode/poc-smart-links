@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample QR Login</title>
+  <style>
+    body {
+      font-family: 'Sarabun', 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #e8f5f3 0%, #d4f1f4 100%);
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,150,136,0.15);
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #008858;
+      text-align: center;
+      font-weight: 600;
+    }
+    .env-select {
+      width: 100%;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      padding: 0.6rem;
+      border-radius: 10px;
+      border: 2px solid #b3dcc4;
+      box-sizing: border-box;
+      background: #f1f8f5;
+      color: #006d45;
+      font-weight: 500;
+    }
+    .env-select:focus {
+      outline: none;
+      border-color: #00a86b;
+    }
+    .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: #f8fefb;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px dashed #7fcc9f;
+    }
+    #qrcode {
+      margin-bottom: 1rem;
+    }
+    .btn-login {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(135deg, #00a86b 0%, #008858 100%);
+      text-align: center;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      box-shadow: 0 2px 8px rgba(0,136,88,0.3);
+      font-weight: 600;
+    }
+    .btn-login:hover {
+      background: linear-gradient(135deg, #00c97d 0%, #006d45 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,136,88,0.4);
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+      .container {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      .env-select {
+        font-size: 1rem;
+      }
+      .btn-login {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sample QR Login</h1>
+    
+    <label for="env">เลือก Environment:</label>
+    <select id="env" class="env-select">
+      <option value="DEV">DEV</option>
+      <option value="UAT">UAT</option>
+      <option value="PRD" selected>PRD</option>
+    </select>
+
+    <div class="qr-container">
+      <div id="qrcode"></div>
+    </div>
+
+    <a id="loginBtn" class="btn-login" href="#" target="_blank">
+      เข้าสู่ระบบด้วย ทางรัฐ
+    </a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const envSelect = document.getElementById('env');
+    const loginBtn = document.getElementById('loginBtn');
+    const qrcodeContainer = document.getElementById('qrcode');
+    
+    const envConfig = {
+      DEV: 'https://czp-dev.apps.go.th/czp/shortlink/-1CzbkdEbUO4x1AfRatAkA',
+      UAT: 'https://czp-uat.apps.go.th/czp/shortlink/yDCCX1IKBUKj6iZ9qAS9nQ',
+      PRD: 'https://czp.apps.go.th/czp/shortlink/2DLCEEGUYk6CbkliiRr_lA'
+    };
+
+    let qrcode = null;
+
+    const updateQRAndButton = () => {
+      const env = envSelect.value;
+      const url = envConfig[env];
+      
+      // Update button
+      loginBtn.setAttribute('href', url);
+      
+      // Update QR code
+      qrcodeContainer.innerHTML = '';
+      qrcode = new QRCode(qrcodeContainer, {
+        text: url,
+        width: 256,
+        height: 256,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    };
+
+    envSelect.addEventListener('change', updateQRAndButton);
+    updateQRAndButton();
+  </script>
+</body>
+</html>

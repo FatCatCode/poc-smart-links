@@ -6,8 +6,8 @@
   <title><b>หน้าเลือกประเภทลิงก์</b></title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f9f9f9;
+      font-family: 'Sarabun', 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #e8f5f3 0%, #d4f1f4 100%);
       margin: 0;
       padding: 0;
       min-height: 100vh;
@@ -22,8 +22,8 @@
       padding: 2rem;
       box-sizing: border-box;
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,150,136,0.15);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -31,8 +31,9 @@
     h1 {
       font-size: 1.4rem;
       margin-bottom: 1.5rem;
-      color: #007bff;
+      color: #008858;
       text-align: center;
+      font-weight: 600;
     }
     .btn-link {
       display: block;
@@ -42,17 +43,20 @@
       padding: 0.9rem 1.2rem;
       font-size: 1.1rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       text-decoration: none;
       color: white;
-      background: #007bff;
+      background: linear-gradient(135deg, #00a86b 0%, #008858 100%);
       text-align: center;
-      transition: background 0.2s;
+      transition: all 0.3s ease;
       box-sizing: border-box;
+      box-shadow: 0 2px 8px rgba(0,136,88,0.3);
     }
     .btn-link:hover {
-      background: #0056b3;
+      background: linear-gradient(135deg, #00c97d 0%, #006d45 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,136,88,0.4);
     }
     @media (max-width: 600px) {
       .container {
@@ -77,6 +81,7 @@
     <h1>เลือกประเภทลิงก์ที่ต้องการทดสอบ</h1>
     <a class="btn-link" href="shortlinks.html">Short Links</a>
     <a class="btn-link" href="deeplink.html">Deeplink</a>
+    <a class="btn-link" href="qrlogin.html">Sample QR Login</a>
     <a class="btn-link" href="https://czp.dga.or.th/cportal/sdk/landing/index.html">old landing page</a>
   </div>
 </body>
