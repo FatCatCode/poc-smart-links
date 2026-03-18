@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cpt-dev.dg-paas.cloud/cportal/sdk/iu/v5/sdk.js"></script>  
   <title><b>หน้าเลือกประเภทลิงก์</b></title>
   <style>
     body {
@@ -27,7 +28,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
     }
+
     h1 {
       font-size: 1.4rem;
       margin-bottom: 1.5rem;
@@ -77,6 +81,11 @@
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>ทดสอบ Open Miniapp ใน DEV</h1>
+    <a class="btn-link" onclick="window.czpSdk.openMiniApp('183fa7af-4953-46a3-aaac-9fb09dfff3b8');">IAL 0 - Permission - เริ่มใช้งาน</a>
+    <a class="btn-link" onclick="window.czpSdk.openMiniApp('8b844acc-1c7a-4bfb-a9df-793a94ede2d6');">ตัวอย่างการพัฒนา</a>
+  </div>
   <div class="container">
     <h1>เลือกประเภทลิงก์ที่ต้องการทดสอบ</h1>
     <a class="btn-link" href="https.html">HTTPS</a>
